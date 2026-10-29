@@ -1,0 +1,40 @@
+name: Suggest a game idea
+description: Send your idea to the Shadowfall Idle community review inbox.
+title: "[Idea]: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you! Your GitHub username will be displayed publicly. Submitting an idea does not mean it has been approved for the game. Please do not include personal or confidential information.
+  - type: input
+    id: title
+    attributes:
+      label: Idea title
+      placeholder: "Example: Add a shield-block ability"
+    validations:
+      required: true
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      options:
+        - Combat & Auto-play
+        - Character Progression
+        - Equipment & Loot
+        - World & Bosses
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: What is your idea?
+      description: Explain how it should work and why it benefits players.
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: Optional details
+    validations:
+      required: false
