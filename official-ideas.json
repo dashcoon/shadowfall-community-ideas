@@ -1,0 +1,119 @@
+[
+  {
+    "id": "AUTO-01",
+    "title": "Auto-use existing class skills",
+    "category": "Combat & Auto-play",
+    "description": "Activate existing defensive and offensive abilities in Auto mode to improve wave 41 survival. Preserve manual controls.",
+    "status": "Proposed",
+    "note": "Not implemented; subject to owner approval and the Lovable daily-credit workflow.",
+    "source": "Original Shadowfall Idle idea board"
+  },
+  {
+    "id": "GOLD-01",
+    "title": "Upgrade hero Auto-play AI",
+    "category": "Combat & Auto-play",
+    "description": "Spend in-game gold to improve hero decision-making without weakening baseline AI.",
+    "status": "Proposed",
+    "note": "Not implemented; subject to owner approval and the Lovable daily-credit workflow.",
+    "source": "Original Shadowfall Idle idea board"
+  },
+  {
+    "id": "BUILD-01",
+    "title": "Ability upgrades and mob scaling",
+    "category": "Character Progression",
+    "description": "Improve damage, reach, area width, attack speed and effectiveness against progressing enemy waves.",
+    "status": "Proposed",
+    "note": "Not implemented; subject to owner approval and the Lovable daily-credit workflow.",
+    "source": "Original Shadowfall Idle idea board"
+  },
+  {
+    "id": "BUILD-02",
+    "title": "Character-specific build paths",
+    "category": "Character Progression",
+    "description": "Tank and sustain with life steal, damage-focused choices, and cooldown reduction.",
+    "status": "Proposed",
+    "note": "Not implemented; subject to owner approval and the Lovable daily-credit workflow.",
+    "source": "Original Shadowfall Idle idea board"
+  },
+  {
+    "id": "GOLD-02",
+    "title": "Change spells from level 10",
+    "category": "Character Progression",
+    "description": "Unlock player-selected replacement or alternate spells at character level 10.",
+    "status": "Proposed",
+    "note": "Not implemented; subject to owner approval and the Lovable daily-credit workflow.",
+    "source": "Original Shadowfall Idle idea board"
+  },
+  {
+    "id": "GOLD-03",
+    "title": "Buy movement speed upgrades",
+    "category": "Character Progression",
+    "description": "Gold-purchased movement speed improvements that preserve reliable mobile controls.",
+    "status": "Proposed",
+    "note": "Not implemented; subject to owner approval and the Lovable daily-credit workflow.",
+    "source": "Original Shadowfall Idle idea board"
+  },
+  {
+    "id": "LOOT-01",
+    "title": "Toggle smart auto-salvage",
+    "category": "Equipment & Loot",
+    "description": "Optionally salvage common items only when strictly weaker than equipped gear; OFF by default.",
+    "status": "Proposed",
+    "note": "Not implemented; subject to owner approval and the Lovable daily-credit workflow.",
+    "source": "Original Shadowfall Idle idea board"
+  },
+  {
+    "id": "LOOT-02",
+    "title": "Lock valuable loot",
+    "category": "Equipment & Loot",
+    "description": "Protect higher-rarity drops from accidental automatic or bulk disposal.",
+    "status": "Proposed",
+    "note": "Not implemented; subject to owner approval and the Lovable daily-credit workflow.",
+    "source": "Original Shadowfall Idle idea board"
+  },
+  {
+    "id": "GEAR-01",
+    "title": "Three-piece series bonuses",
+    "category": "Equipment & Loot",
+    "description": "Equip matching Kingslayer’s series weapon, armor and ring for damage, coin, health or cooldown bonuses.",
+    "status": "Proposed",
+    "note": "Not implemented; subject to owner approval and the Lovable daily-credit workflow.",
+    "source": "Original Shadowfall Idle idea board"
+  },
+  {
+    "id": "GOLD-04",
+    "title": "Every-12-waves gear merchant",
+    "category": "Equipment & Loot",
+    "description": "Buy improved armor, weapon or jewelry at waves 12, 24, 36 and onward.",
+    "status": "Proposed",
+    "note": "Not implemented; subject to owner approval and the Lovable daily-credit workflow.",
+    "source": "Original Shadowfall Idle idea board"
+  },
+  {
+    "id": "BOSS-01",
+    "title": "More challenging boss rooms",
+    "category": "World & Bosses",
+    "description": "Boss room should feel more dangerous than regular rooms, with readable fair mechanics.",
+    "status": "Proposed",
+    "note": "Not implemented; subject to owner approval and the Lovable daily-credit workflow.",
+    "source": "Original Shadowfall Idle idea board"
+  },
+  {
+    "id": "BOSS-02",
+    "title": "Boss basic melee attacks",
+    "category": "World & Bosses",
+    "description": "Bosses should use standard attacks between existing slam and charge abilities.",
+    "status": "Proposed",
+    "note": "Not implemented; subject to owner approval and the Lovable daily-credit workflow.",
+    "source": "Original Shadowfall Idle idea board"
+  },
+  {
+    "id": "NIGHT-01",
+    "title": "Fear of the Night",
+    "category": "World & Bosses",
+    "description": "A temporary nighttime restriction after approximately two to three nighttime deaths, with visible cooldown.",
+    "status": "Proposed",
+    "note": "Not implemented; subject to owner approval and the Lovable daily-credit workflow.",
+    "source": "Original Shadowfall Idle idea board"
+  }
+]
