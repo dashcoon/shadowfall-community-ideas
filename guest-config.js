@@ -1,5 +1,5 @@
-// Public configuration only. NEVER put GitHub API tokens or Turnstile secret keys here.
-window.SHADOWFALL_GUEST_CONFIG = {
-  endpoint: "", // Cloudflare Worker HTTPS URL, e.g. https://shadowfall-guest-ideas.example.workers.dev/suggest
-  turnstileSiteKey: "" // PUBLIC Cloudflare Turnstile sitekey for dashcoon.github.io
+// Public non-secret configuration. No guest API is enabled until endpoint + Turnstile are deployed.
+window.SHADOWFALL_GUEST_CONFIG={
+  endpoint:"", // HTTPS Cloudflare Worker base URL, excluding trailing slash
+  turnstileSiteKey:"" // public Turnstile sitekey for dashcoon.github.io
 };
