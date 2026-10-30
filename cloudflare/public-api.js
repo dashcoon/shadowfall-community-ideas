@@ -21,11 +21,34 @@ let d;try{let raw=await request.text();if(raw.length>8000)throw 0;d=JSON.parse(r
 if(d.website)return json(env,{ok:true,queued:true},202);
 const nickname=String(d.nickname||"Anonymous adventurer").trim(),title=String(d.title||"").trim(),description=String(d.description||"").trim(),category=String(d.category||""),turnstileToken=String(d.turnstileToken||"");
 if(!/^[\p{L}\p{N} ._-]{2,24}$/u.test(nickname)||title.length<5||title.length>100||description.length<30||description.length>1200||!categories.has(category))return json(env,{error:"Please check all form fields."},400);
-if(!turnstileToken||turnstileToken.length>4096)return json(env,{error:"Please complete the bot check."},400);
+if(!turnstileToken||turnstileToken.length>2048)return json(env,{error:"Please complete the bot check.",code:"missing_token"},400);
 const payload=new URLSearchParams({secret:env.TURNSTILE_SECRET,response:turnstileToken});
 const ip=request.headers.get("CF-Connecting-IP")||"";if(ip)payload.set("remoteip",ip);
-let check;try{const r=await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify",{method:"POST",body:payload});check=await r.json()}catch{return json(env,{error:"Bot service unavailable"},503)}
-if(!check.success||check.hostname!==(env.TURNSTILE_HOSTNAME||"dashcoon.github.io"))return json(env,{error:"Bot check failed"},403);
+let check;
+try{
+  const r=await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify",{
+    method:"POST",
+    headers:{"Content-Type":"application/x-www-form-urlencoded"},
+    body:payload
+  });
+  if(!r.ok)throw Error("Turnstile API returned "+r.status);
+  check=await r.json();
+}catch{
+  return json(env,{error:"Bot verification service temporarily unavailable.",code:"verification_unavailable"},503);
+}
+if(!check?.success){
+  const errors=Array.isArray(check?.["error-codes"])?check["error-codes"]:[];
+  // No tokens, keys, addresses or personal details are ever returned or logged.
+  console.warn("Turnstile siteverify rejected token; codes:",errors.filter(x=>typeof x==="string").slice(0,6));
+  if(errors.includes("timeout-or-duplicate"))return json(env,{error:"Verification expired or was already used. Please complete a fresh Cloudflare check and retry.",code:"timeout_or_duplicate"},403);
+  if(errors.includes("invalid-input-secret")||errors.includes("missing-input-secret"))return json(env,{error:"Bot protection is misconfigured on the server. Please contact the website owner.",code:"secret_configuration"},503);
+  if(errors.includes("invalid-input-response")||errors.includes("missing-input-response"))return json(env,{error:"Cloudflare did not accept the verification token. Please refresh the challenge and retry.",code:"invalid_token"},403);
+  return json(env,{error:"Bot check failed. Please retry with a fresh verification.",code:"verification_rejected"},403);
+}
+if(check.hostname!==(env.TURNSTILE_HOSTNAME||"dashcoon.github.io")){
+  console.warn("Turnstile siteverify hostname differs from the expected website hostname");
+  return json(env,{error:"Bot protection hostname configuration is incorrect.",code:"hostname_mismatch"},403);
+}
 const ipHash=await digest((env.RATE_HASH_SALT||"")+":"+ip+":"+new Date().toISOString().slice(0,10));
 const now=Math.floor(Date.now()/1000);
 const recent=await env.DB.prepare("SELECT count(*) AS count FROM suggestions WHERE ip_hash = ? AND created_at > ?").bind(ipHash,now-3600).first();
