@@ -20,12 +20,15 @@ const BASE_HEADERS = {
 function respond(data,status=200){return new Response(JSON.stringify(data),{status,headers:{"Content-Type":"application/json; charset=utf-8",...BASE_HEADERS}})}
 function safeId(value){return /^\d{1,12}$/.test(value||"")&&Number(value)>0?Number(value):null}
 async function review(request,env,ctx){
-  if(!env.ADMIN_EMAIL)return {error:respond({error:"Admin allowlist not configured"},503)};
+  // Access MUST protect all traffic to this admin Worker. Never deploy this code to a public Worker.
+  // Account-members policy can include other account members, so use only if owner is sole member.
   if(!ctx.access)return {error:respond({error:"Cloudflare Access must be enabled on this Worker"},403)};
   let identity;
   try{identity=await ctx.access.getIdentity()}catch{return {error:respond({error:"Could not verify Access identity"},403)}}
   const email=(identity?.email||"").trim().toLowerCase();
-  if(!email||email!==env.ADMIN_EMAIL.trim().toLowerCase())return {error:respond({error:"Not authorized to review ideas"},403)};
+  if(!email)return {error:respond({error:"Authenticated identity unavailable"},403)};
+  // Optional extra restriction: can be enabled later WITHOUT changing the dashboard code.
+  if(env.ADMIN_EMAIL && email!==env.ADMIN_EMAIL.trim().toLowerCase())return {error:respond({error:"Not authorized to review ideas"},403)};
   return {email};
 }
 
