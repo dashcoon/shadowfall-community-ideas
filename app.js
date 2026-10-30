@@ -28,7 +28,7 @@ const guestStatus=$('guestFormStatus');
 const guestForm=$('guestForm');
 const guestButton=$('guestSend');
 const hasGuestSetup=()=>Boolean(guestConfig.endpoint&&guestConfig.turnstileSiteKey);
-$('suggest').onclick=()=>{guest.classList.remove('hidden'); guestStatus.textContent=hasGuestSetup()?'':'Guest submissions are being prepared. The existing GitHub suggestion option remains available until activated.'; if(!hasGuestSetup())return; if(!widgetId&&typeof window.turnstile!=='undefined'){widgetId=window.turnstile.render('#guestTurnstile',{sitekey:guestConfig.turnstileSiteKey,callback:()=>{guestButton.disabled=false},'expired-callback':()=>{guestButton.disabled=true}})}};
+$('suggest').onclick=()=>{guest.classList.remove('hidden'); guestStatus.textContent=hasGuestSetup()?'':'Guest submissions are being prepared. The existing GitHub suggestion option remains available until activated.'; if(!hasGuestSetup())return; if(widgetId===null&&typeof window.turnstile!=='undefined'){widgetId=window.turnstile.render('#guestTurnstile',{sitekey:guestConfig.turnstileSiteKey,callback:()=>{guestButton.disabled=false},'expired-callback':()=>{guestButton.disabled=true}})}};
 $('closeGuest').onclick=()=>guest.classList.add('hidden');
 guest.onclick=ev=>{if(ev.target===guest)guest.classList.add('hidden')};
 try{const remembered=localStorage.getItem('shadowfall-call-name');if(remembered)$('guestNickname').value=remembered.slice(0,24)}catch(error){}
