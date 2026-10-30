@@ -1,0 +1,12 @@
+{
+  "name": "shadowfall-suggestions-public",
+  "main": "public-api.js",
+  "compatibility_date": "2026-10-01",
+  "d1_databases": [
+    { "binding": "DB", "database_name": "shadowfall-community-ideas", "database_id": "REPLACE_WITH_REAL_DATABASE_ID" }
+  ],
+  "vars": {
+    "ALLOWED_ORIGIN": "https://dashcoon.github.io",
+    "TURNSTILE_HOSTNAME": "dashcoon.github.io"
+  }
+}
