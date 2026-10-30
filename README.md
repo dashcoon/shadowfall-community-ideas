@@ -32,3 +32,20 @@ You can find issue label controls in the issue's right-hand sidebar. GitHub dete
 ## Offline preview
 
 Open `index.html` directly in a browser to inspect the original mind map. Public user submissions will only work after publishing this site under a separate public GitHub repository. The local preview is not a live multi-user editor.
+## Staged guest submissions (feature branch; NOT live yet)
+
+The original owner-approved public version uses GitHub Issues and is **unchanged on main**. A work-in-progress branch `feature/nickname-guest-submissions` adds a direct on-site modal with an optional user-chosen **call name** (nickname), title, category and description. No GitHub account or email is required for visitors. Nicknames are **not verified identities** and may repeat; the public board must label them appropriately.
+
+Because GitHub Pages is a static host, anonymous writes **cannot** be safely sent directly to GitHub without exposing the owner’s API token. The branch therefore contains `worker/guest-submissions.js`, a Cloudflare Worker for server-side validation and spam prevention, plus a Cloudflare Turnstile bot check. Submitted ideas are stored as *public GitHub Issues* under a bot/owner token with the nickname in the issue body; owner acknowledgement/approval still uses `acknowledged` and `added-to-board` issue labels. GitHub tokens and Turnstile secret keys must never be placed in the Pages client files.
+
+### Required manual configuration before merge
+
+1. Create a Cloudflare account if needed and register a free Turnstile widget for hostname **dashcoon.github.io**; get its PUBLIC site key and PRIVATE secret.
+2. Create a Cloudflare Worker and deploy `worker/guest-submissions.js`. The Worker requires a **fine-grained GitHub token** with *Issues read/write for only* `dashcoon/shadowfall-community-ideas` as an encrypted secret `GITHUB_TOKEN`, and the private Turnstile key as encrypted secret `TURNSTILE_SECRET`. Do **not** grant any permission to the private Shadowfall game repo. Review provider pricing/quotas and do not create paid services without approval.
+3. Set only the Worker public HTTPS endpoint plus PUBLIC Turnstile site key in `guest-config.js`.
+4. Test from a browser: open form, choose call name, submit idea, check that a public GitHub issue appears under Pending, assign `acknowledged`, refresh the website and see Acknowledged, then separately assign `added-to-board` and see it appear on the mind map.
+5. After those steps pass, merge this feature branch to `main`. Without configured backend/Turnstile, the guest form is intentionally not enabled and the fallback GitHub issue link remains available.
+
+**Security/limitations:** public nicknames are self-chosen, not account names; no identity guarantees. All public submissions visible to everyone. Turnstile provides bot protection but not a perfect abuse defense; use Cloudflare rate limits and monitor GitHub API limits, add moderation/limits before advertising widely. Owner approves by GitHub labels; public visitors cannot add labels via the website. A successful submission does not approve an idea or change the separate private canonical game board. The owner must explicitly approve copying it into that board.
+
+**No Lovable/Replit credits spent. No public main-branch changes have been made yet for nickname submissions.**
