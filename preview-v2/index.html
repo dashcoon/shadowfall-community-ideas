@@ -1,0 +1,37 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0c1019"><meta name="description" content="Shadowfall Idle ideas, community suggestions and curated roadmap"><title>Shadowfall Idle — Community Idea Board</title><link rel="stylesheet" href="./styles.css"></head><body>
+<header class="wrap top"><div><div class="eyebrow">Community planning · Not the live game</div><h1>Shadowfall Idle<br>Idea Constellation</h1><p class="desc">Explore our ideas. Suggest your own. The creator reviews each submission before it joins the curated board.</p></div><div class="actions"><button id="share" class="btn">⤴ Share board</button><button id="suggest" type="button" class="btn primary">＋ Suggest an idea</button></div></header>
+<main class="wrap"><section class="stats public-stats" aria-label="Idea totals"><div class="stat"><strong id="num-official">13</strong><span>Curated ideas</span></div><div class="stat"><strong id="num-added">0</strong><span>Approved community ideas</span></div></section>
+<div class="tabs" role="tablist" aria-label="Board views"><button class="tab on" data-view="map" role="tab" aria-selected="true">✦ Mind map</button><button class="tab" data-view="ideas" role="tab" aria-selected="false">Official ideas</button><button class="tab" data-view="added" role="tab" aria-selected="false">Added by community</button></div>
+<section class="panel" id="panel-map"><div class="section-head"><h2>Explore the idea map</h2><div class="control"><input class="search" id="mapSearch" placeholder="Find an idea..." aria-label="Search ideas"><button class="btn" id="refreshMap">Refresh</button></div></div><div class="map-wrap" id="mapwrap"><svg xmlns="http://www.w3.org/2000/svg" id="map" viewBox="0 0 1200 820" role="img" aria-label="Interactive mind map of Shadowfall Idle official ideas"></svg><div class="map-tools"><button id="zoomIn" aria-label="Zoom in">+</button><button id="zoomOut" aria-label="Zoom out">−</button><button id="resetMap" aria-label="Reset map view">⌖</button></div></div><p class="tip">Drag to pan · Scroll/pinch to zoom · Tap an idea to read details. Curated suggestions appear after owner approval.</p></section>
+<section class="panel hidden" id="panel-list"><div class="section-head"><h2 id="listTitle">Official ideas</h2><div class="control"><input id="filter" class="search" placeholder="Search ideas or authors..." aria-label="Search list"><select id="categoryFilter" aria-label="Category filter"><option value="">All categories</option><option>Combat &amp; Auto-play</option><option>Character Progression</option><option>Equipment &amp; Loot</option><option>World &amp; Bosses</option><option>Other</option></select><button class="btn" id="refresh">↻ Refresh</button></div></div><div id="status" class="notice hidden"></div><div id="cards" class="grid"></div></section>
+<section class="footer-help"><h3>How your ideas become part of the game</h3><p><strong>1.</strong> A player submits a suggestion with a chosen nickname (no account required) → <strong>2.</strong> Creator reads it and applies <em>acknowledged</em> → <strong>3.</strong> Creator separately approves it for the public mind map → <strong>4.</strong> Idea enters this community mind map. Copying it into the private development roadmap is a separate owner decision.</p><p id="hosting" class="tip">This local preview contains existing ideas. For live community submissions, publish these files in a new public GitHub Pages repository.</p></section></main>
+<footer class="wrap foot">Fan-driven planning for an original game · Not affiliated with GitHub. Only approved community ideas are public. Unapproved submissions remain private to the owner. No private game files are exposed here.</footer>
+<div class="detail hidden" id="detail" role="dialog" aria-modal="true" aria-labelledby="detailTitle"><div class="dialog"><button id="closeDetail" class="close" aria-label="Close">×</button><div class="eyebrow" id="detailMeta"></div><h2 id="detailTitle"></h2><p id="detailDescription"></p><p id="detailNote"></p><p><a id="detailLink" href="#" target="_blank" rel="noopener noreferrer" class="hidden">View original suggestion on GitHub</a></p></div></div>
+<div class="detail hidden" id="guestDialog" role="dialog" aria-modal="true" aria-labelledby="guestDialogTitle">
+<div class="dialog guest-dialog">
+<button type="button" id="closeGuest" class="close" aria-label="Close suggestion form">×</button>
+<div class="eyebrow">Community suggestion · No login required</div><h2 id="guestDialogTitle">Share your idea</h2>
+<p class="guest-intro">Choose what other players should call you. No account, email address or password needed. Your suggestion stays private during review and becomes publicly visible only if approved. Nicknames are unverified.</p>
+<form id="guestForm" autocomplete="off">
+<label for="guestNickname">Call name <small>(optional)</small></label>
+<input id="guestNickname" name="nickname" placeholder="e.g. NightRaven" maxlength="24" autocomplete="nickname">
+<label for="guestTitle">Idea title</label>
+<input id="guestTitle" name="title" placeholder="Your idea in a few words" required minlength="5" maxlength="100">
+<label for="guestCategory">Category</label>
+<select id="guestCategory" name="category" required>
+<option value="" disabled selected>Choose a category</option>
+<option>Combat &amp; Auto-play</option><option>Character Progression</option><option>Equipment &amp; Loot</option><option>World &amp; Bosses</option><option>Other</option>
+</select>
+<label for="guestDescription">Describe your idea</label>
+<textarea id="guestDescription" name="description" required minlength="30" maxlength="1200" rows="4" placeholder="How should it work? What would make the game better?"></textarea>
+<div class="bot-trap" aria-hidden="true"><label for="guestWebsite">Website</label><input id="guestWebsite" name="website" tabindex="-1" autocomplete="off"></div>
+<div id="guestTurnstile" aria-label="Bot protection"></div>
+<label class="remember-row"><input id="guestRemember" type="checkbox" checked> Remember my call name on this device</label>
+<p id="guestFormStatus" role="status" aria-live="polite" class="guest-status"></p>
+<button id="guestSend" class="btn primary" type="submit" disabled>Submit idea</button>
+</form>
+<p class="tip">Submissions are private until approved for the public map. Acknowledgement does not mean approval.</p>
+</div></div>
+<script src="./guest-config.js" defer></script>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" defer></script>
+<script src="../seed.js" defer></script><script src="./app.js" defer></script></body></html>
