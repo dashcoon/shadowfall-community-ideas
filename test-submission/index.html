@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Shadowfall Idle | Guest Submission Test</title>
+<link rel="stylesheet" href="../styles.css">
+<style>
+.test-area{width:min(650px,calc(100% - 30px));margin:28px auto 65px}
+.test-head{margin:0 0 20px}
+.test-head h1{font-size:clamp(24px,4vw,36px)}
+.test-head p{margin:12px 0}
+.test-form{display:grid;gap:13px}
+.test-form label{display:block;color:var(--txt);font-weight:650;font-size:13px;margin-bottom:6px}
+.test-form input,.test-form select,.test-form textarea{width:100%;background:#101829;border:1px solid #526279;border-radius:8px;padding:12px;color:var(--txt);font:inherit}
+.test-form textarea{min-height:115px;resize:vertical}
+.test-form .count{font-size:12px;text-align:right;color:var(--muted)}
+.test-form button{padding:13px 16px}
+.test-form button:disabled{opacity:.45;cursor:not-allowed}
+.submit-status{min-height:26px;white-space:pre-wrap;font-size:14px}
+.test-note{margin-top:16px;border:1px solid var(--line);background:#182336;border-radius:10px;padding:13px}
+.hp-field{position:absolute;left:-9999px;opacity:0;pointer-events:none}
+</style>
+</head>
+<body>
+<main class="test-area">
+<div class="test-head">
+<div class="eyebrow">Shadowfall Idle · connection test</div>
+<h1>Send an idea without GitHub</h1>
+<p>This is a dedicated test page. Your regular <a href="../">Idea Constellation</a> is unchanged. Submissions here are real and saved as <strong>pending</strong> in the community database. Do not enter sensitive information.</p>
+</div>
+<section class="panel">
+<form id="testForm" class="test-form" autocomplete="off">
+<div><label for="nickname">Call name (optional)</label><input id="nickname" name="nickname" maxlength="24" placeholder="e.g. Dashusher"></div>
+<div><label for="title">Idea title</label><input id="title" name="title" required minlength="5" maxlength="100" placeholder="e.g. Improve auto-play damage"></div>
+<div><label for="category">Category</label><select id="category" name="category" required>
+<option value="" disabled selected>Select a category</option>
+<option>Combat &amp; Auto-play</option>
+<option>Character Progression</option>
+<option>Equipment &amp; Loot</option>
+<option>World &amp; Bosses</option>
+<option>Other</option>
+</select></div>
+<div><label for="description">Idea description (minimum 30 characters)</label>
+<textarea id="description" name="description" required minlength="30" maxlength="1200" placeholder="Example: Make Auto-play use class skills automatically so my hero can survive tougher waves."></textarea>
+<div id="count" class="count">0 / 1200 characters · minimum 30</div></div>
+<div class="hp-field" aria-hidden="true"><label for="website">Website</label><input id="website" name="website" tabindex="-1" autocomplete="off"></div>
+<div><label>Bot protection</label><div id="turnstile"></div><p id="botState" class="tip">Loading Cloudflare Turnstile...</p></div>
+<button class="btn primary" id="submit" type="submit" disabled>Submit test suggestion</button>
+<p id="status" class="submit-status" role="status" aria-live="polite"></p>
+</form>
+</section>
+<div class="test-note"><strong>What should happen?</strong><p>After submission, you should receive a confirmation with an idea number. You can then open your Cloudflare D1 <strong>suggestions</strong> table to verify the pending row. The public mind map will not show this idea until you approve it.</p></div>
+</main>
+<script>
+(() => {
+"use strict";
+const API="https://shadowfall-ideas-api.htcbestofall.workers.dev";
+const siteKey="0x4AAAAAAFseVpRQ4w6IQ--M";
+const el=id=>document.getElementById(id);
+let token="",widgetId=null,busy=false;
+function update(){
+const text=el("description").value;
+el("count").textContent=text.length+" / 1200 characters · minimum 30";
+el("submit").disabled=busy||!token||!el("testForm").checkValidity();
+}
+el("testForm").addEventListener("input",update);
+el("testForm").addEventListener("change",update);
+window.shadowfallTurnstileReady=()=>{
+try {
+widgetId=turnstile.render("#turnstile",{
+sitekey:siteKey,
+callback:(response)=>{token=response;el("botState").textContent="Verification ready";update();},
+"expired-callback":()=>{token="";el("botState").textContent="Verification expired. Please retry.";update();},
+"error-callback":()=>{token="";el("botState").textContent="Turnstile could not verify. Please refresh this page.";update();}
+});
+el("botState").textContent="Complete the Cloudflare check if prompted.";
+} catch(error){el("botState").textContent="Bot protection could not start: "+error.message}
+};
+el("testForm").addEventListener("submit",async(event)=>{
+event.preventDefault();
+if(busy||!token||!el("testForm").reportValidity())return;
+busy=true;update();el("status").textContent="Submitting to Cloudflare D1...";
+const data={
+nickname:el("nickname").value.trim()||"Anonymous adventurer",
+title:el("title").value.trim(),
+category:el("category").value,
+description:el("description").value.trim(),
+website:el("website").value,
+turnstileToken:token
+};
+try{
+const controller=new AbortController();
+const timer=setTimeout(()=>controller.abort(),15000);
+let response;
+try {
+response=await fetch(API+"/public/suggestions",{
+method:"POST",headers:{"Content-Type":"application/json"},
+body:JSON.stringify(data),signal:controller.signal
+});
+}finally{clearTimeout(timer);}
+const result=await response.json().catch(()=>({}));
+if(!response.ok)throw new Error(result.error||"Server returned "+response.status);
+if(!result.ok||!result.id)throw new Error("Server did not confirm a saved idea.");
+el("status").textContent="Saved! Idea #"+result.id+" is pending review in Cloudflare D1.";
+el("testForm").reset();
+}catch(error){el("status").textContent="Not saved: "+(error.name==="AbortError"?"Request timed out":error.message)}
+finally{busy=false;token="";if(widgetId!==null&&window.turnstile)turnstile.reset(widgetId);update()}
+});
+})();
+</script>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=shadowfallTurnstileReady&render=explicit" async defer></script>
+</body>
+</html>
